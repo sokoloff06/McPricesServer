@@ -101,7 +101,6 @@ public class ParsingController {
 	private HashMap<String, Product> getProducts(){
 
 		try {
-
 			Connection productListConnection = Jsoup.connect(PRODUCTS_URL);
 
 			// Gets HTML doc
@@ -120,19 +119,22 @@ public class ParsingController {
 				title.trim();
 				// Gets link to product's details
 				String link = e.attr("href");
+				//Gets picture source
+				Elements inner = e.getElementsByClass("products__item-image");
+				String picSrc = inner.first().attr("data-src");
 
 				// Adds product to HashMap
-				productsByName.put(title, new Product(title, getPrice(BASE_URL + link)));
+				productsByName.put(title, new Product(title, getPrice(BASE_URL + link), picSrc));
 
-/*				// For tests:
+				// For tests:
 				Product testShow = productsByName.get(title);
 
 				System.out.println(
-					"Name: " + testShow.getName() + "\n" +
-					"Link: " + link + "\n" +
-					"Price: " + testShow.getPrice()
+						"Name: " + testShow.getName() + "\n" +
+								"Link: " + link + "\n" +
+								"Price: " + testShow.getPrice() + "\n" +
+								"Image source: " + testShow.getPic()
 				);
-*/
 
 			}
 			return productsByName;
